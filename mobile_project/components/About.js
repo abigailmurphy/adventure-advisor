@@ -6,7 +6,7 @@ import {StyleSheet, ImageBackground, Text, View, TextInput, Button} from 'react-
 const About = () => {
     return(
         <View style ={styles.containerPrime}>
-        <ImageBackground source={require('./img/background.jpg')} resizeMode='cover'/>
+        <ImageBackground source={require('./assets/images/background.jpg')} style ={{flex:1}} >
 
         <View style={styles.container}>
             <Text style={{fontSize: 35, color: 'white', fontWeight:"bold"}}>About AdventureAdvisor</Text>
@@ -31,7 +31,7 @@ const About = () => {
 
           
       </View>
-      
+      </ImageBackground>
       
       </View>
 
