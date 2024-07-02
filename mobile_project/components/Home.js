@@ -6,22 +6,24 @@ import ProfileScreen from './Profile.js';
 import ScrapBookScreen from './ScrapBook.js';
 import CaptureScreen from './Capture.js';
 import {Feather, MaterialIcons, FontAwesome} from '@expo/vector-icons';
+import {useValue} from './ValueContext';
 
 function HomeScreen({ navigation }) {
+    const {currentValue} = useValue();
     return (
         <View style ={styles.containerPrime}>
-        <ImageBackground source={require('./img/background.jpg')} resizeMode='cover'/>
+        <ImageBackground source={require('./assets/images/background.jpg')} style ={{flex:1}} >
 
         <View style={styles.containerTop}>
         
         <Pressable
-                  title = 'Settings'
+                  
                   onPress={() => navigation.navigate('Settings', {SettingsScreen})} >
                      <Feather name="settings" size={35} color="white" />
         </Pressable>
         
         <Pressable
-                  title = 'Settings'
+                  
                   onPress={() => navigation.navigate('Profile', {ProfileScreen})} >
                      <MaterialIcons name="account-circle" size={35} color="white" />
         </Pressable>
@@ -30,28 +32,29 @@ function HomeScreen({ navigation }) {
         </View>
         <View style={styles.container}>
             <Text style={{fontSize: 30, color: 'white', fontWeight:"bold"}}>AdventureAdvisor</Text>
-          <Image source={require('./img/earth.jpg')} style = {styles.image} />
-          <Text style={{fontSize: 20, color: 'white', fontWeight:"bold"}}>Plan and Document Your Next Adventure</Text>
+          <Image source={require('./assets/images/earth.jpg')} style = {styles.image} />
+          <Text style={{fontSize: 20, color: 'white', fontWeight:"bold"}}>Welcome {currentValue['username']}!</Text>
           
       </View>
       <View style ={styles.container1}>
       <Pressable
-                  title = 'ScrapBook'
+                 
                   style ={styles.press}
                   onPress={() => navigation.navigate('ScrapBook', {ScrapBookScreen})} >
                      <FontAwesome name="photo" size={30} color="white" />
-                     <Text style={{color:'white', margin:20}}>My ScrapBook</Text>
+                     <Text style={{color:'white', marginLeft: 10}}>My ScrapBook</Text>
         </Pressable>
       
         <Pressable
-                  title = 'Capture'
+                  
                   style ={styles.press}
                   onPress={() => navigation.navigate('Capture', {CaptureScreen})} >
                      <MaterialIcons name="add-a-photo" size={30} color="white"  />
-                     <Text style={{color:'white', margin:20}}>Capture Your Adventure</Text>
+                     <Text style={{color:'white', marginLeft: 10}}>Capture Your Adventure</Text>
         </Pressable>  
   
       </View>
+      </ImageBackground>
       </View>
     );
   }
@@ -75,7 +78,7 @@ const Home = () => {
 
 const styles = StyleSheet.create({
     image:{
-        borderRadius: '50%',
+        borderRadius: '100%',
         height: 200,
         width: 200,
         borderWidth: 10,
@@ -93,18 +96,21 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        padding: 20,
+        padding: 10,
+        
+
         
 
     },
     containerPrime:{
-        justifyContent: 'center',
-        padding: 20,
+        flexDirection: 'column',
+        justifyContent: 'space-evenly',
+  
         flex:1,
         backgroundColor: 'black'
     },
     container: {
-        flex: 5, 
+        flex: 4, 
         justifyContent: 'space-evenly', 
         alignItems: 'center',
         alignContent: 'flex-end',
