@@ -8,4 +8,4 @@
 
 ## A Tour of My Work
 
-![homePage](AdvisorImg/advisorHome.png)
+![homePage](advisorImg/advisorHome.png)
