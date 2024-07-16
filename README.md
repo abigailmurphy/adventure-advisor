@@ -8,4 +8,6 @@
 
 ## A Tour of My Work
 
-![homePage](advisorImg/advisorHome.PNG | width= 100)
+
+
+<img src="advisorImg/advisorHome.PNG" width="100" >
