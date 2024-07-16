@@ -34,14 +34,36 @@ Once the user presses "Lets Go!" the program puts all of the parameters collecte
 <br> 
 
 <img src="advisorImg/loading.PNG" width="250" > <img src="advisorImg/resultItinerary.PNG" width="250" >
+
 <br>
+Before going into documentation, lets explore one more planning feature. Using the drawr navigator on the top left, the user can navigate to "Find Adventures Now" which is a quick-planning feature using the users location, and the time of day to plan the rest of the day. It uses the same method and there are buttons currently added similar to "Plan Ahead", however the specifications do not currently work as I am changing them to be quicker and more specific to this use.
+<br>
+
+<img src="advisorImg/quickPlan.PNG" width="250" >
+
+<br>
+
 To view saved itineraries, one again use the bottom tabs to navigate to "MyTrips". Here are itineraries of trips that the user has not left for yet. They can see them listed here, and edit as necessary, or delete the itinerary. These are stored persistantly. 
+
+<br>
+
 <img src="advisorImg/myItineraries.PNG" width="250" > <img src="advisorImg/expandItin.PNG" width="250" > <img src="advisorImg/editItinerary.PNG" width="250" >
 
+<br>
+
 Using the drawr navigator on the top left, the user can view and edit their "completed trips" meaning they have already departed for them. The same features here exist for editing and deleting. The only difference is that this flatlist displays the elements of completed:[] rather than trips:[]. 
+
+<br>
+
 <img src="advisorImg/completed.PNG" width="250" >
 
+<br>
+
+
 The difference between 'trips' and 'completed' can be seen in the scrabook section. The user can navigate here by returning to the home page and clicking the 'Scrapbook' button. On the left is the home page with all 'completed' trips. If the user clicks on the image, it takes them to a 'TripDetails' page, that displays completed trip details (seen right). 
+
+<br>
+
 <img src="advisorImg/scrapBookHome.PNG" width="250" > <img src="advisorImg/scrapBookEntry.PNG" width="250" >
 
 
