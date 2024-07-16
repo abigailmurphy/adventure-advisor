@@ -14,6 +14,7 @@ Next, open a terminal and navigate to the project. Run - npx expo start, and sca
 ## A Tour of My Work
 
 Welcome to AdventureAdvisor! Your personal trip planning and documentation assistant!
+<br>
 <img src="advisorImg/advisorHome.PNG" width="250" >
 
 Let's first check out planning. Navigate to this tool with the tab navigator at the bottom of the screen, pressing "Find an Adventure". Enter your destination, dates of travel, start and end date, and additional parameters and specifications. All of these are optional aside from destination, if no dates are entered, the app will assume that the trip is only one day and plan accordinly. The variables here are "useState" variables in react and are set and unset as soon as buttons are clicked. 
