@@ -36,7 +36,7 @@ Once the user presses "Lets Go!" the program puts all of the parameters collecte
 <img src="advisorImg/loading.PNG" width="250" > <img src="advisorImg/resultItinerary.PNG" width="250" >
 
 <br>
-Before going into documentation, lets explore one more planning feature. Using the drawr navigator on the top left, the user can navigate to "Find Adventures Now" which is a quick-planning feature using the users location, and the time of day to plan the rest of the day. It uses the same method and there are buttons currently added similar to "Plan Ahead", however the specifications do not currently work as I am changing them to be quicker and more specific to this use.
+Before going into documentation, lets explore one more planning feature. Using the drawr navigator on the top left, the user can navigate to "Find Adventures Now" which is a quick-planning feature using the users location, and the time of day to plan the rest of the day. It uses the same method and there are buttons currently added similar to "Plan Ahead". However the specifications do not currently work as I am changing them to be quicker and more applicable to this use. Location and current time do work and will communicate with ChatGPT for a generalized day-plan. 
 <br>
 
 <img src="advisorImg/quickPlan.PNG" width="250" >
