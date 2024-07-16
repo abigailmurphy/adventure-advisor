@@ -60,7 +60,7 @@ Using the drawr navigator on the top left, the user can view and edit their "com
 <br>
 
 
-The difference between 'trips' and 'completed' can be seen in the scrabook section. The user can navigate here by returning to the home page and clicking the 'Scrapbook' button. On the left is the home page with all 'completed' trips. If the user clicks on the image, it takes them to a 'TripDetails' page, that displays completed trip details (seen right). 
+The difference between 'trips' and 'completed' can be seen in the scrabook section. The user can navigate here by returning to the home page and clicking the 'Scrapbook' button. On the left is the home page with all 'completed' trips. If the user clicks on the image, it takes them to a 'TripDetails' page, that displays completed trip details (seen right). Photos are added using an image picker.
 
 <br>
 
