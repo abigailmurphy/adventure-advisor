@@ -14,15 +14,27 @@ Next, open a terminal and navigate to the project. Run - npx expo start, and sca
 ## A Tour of My Work
 
 Welcome to AdventureAdvisor! Your personal trip planning and documentation assistant!
+
 <br>
+
 <img src="advisorImg/advisorHome.PNG" width="250" >
 
+<br>
+
 Let's first check out planning. Navigate to this tool with the tab navigator at the bottom of the screen, pressing "Find an Adventure". Enter your destination, dates of travel, start and end date, and additional parameters and specifications. All of these are optional aside from destination, if no dates are entered, the app will assume that the trip is only one day and plan accordinly. The variables here are "useState" variables in react and are set and unset as soon as buttons are clicked. 
+
+<br>
+
 <img src="advisorImg/planAhead.PNG" width="250" > <img src="advisorImg/tripType.PNG" width="250" > <img src="advisorImg/activities.PNG" width="250" >
 
-Once the user presses "Lets Go!" the program puts all of the parameters collected through the check boxes, datepickers, and text boxes into a sentence. That sentence is then sent as a query to ChatGPT. Once the response is shown to the user, they can chose to save the itinerary or continue working. Let's imagine that they save this trip.
-<img src="advisorImg/loading.PNG" width="250" > <img src="advisorImg/resultItinerary.PNG" width="250" >
+<br>
 
+Once the user presses "Lets Go!" the program puts all of the parameters collected through the check boxes, datepickers, and text boxes into a sentence. That sentence is then sent as a query to ChatGPT. Once the response is shown to the user, they can chose to save the itinerary or continue working. Let's imagine that they save this trip.
+
+<br> 
+
+<img src="advisorImg/loading.PNG" width="250" > <img src="advisorImg/resultItinerary.PNG" width="250" >
+<br>
 To view saved itineraries, one again use the bottom tabs to navigate to "MyTrips". Here are itineraries of trips that the user has not left for yet. They can see them listed here, and edit as necessary, or delete the itinerary. These are stored persistantly. 
 <img src="advisorImg/myItineraries.PNG" width="250" > <img src="advisorImg/expandItin.PNG" width="250" > <img src="advisorImg/editItinerary.PNG" width="250" >
 
