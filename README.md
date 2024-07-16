@@ -9,5 +9,4 @@
 ## A Tour of My Work
 
 
-
-<img src="advisorImg/advisorHome.PNG" width="100" >
+<img src="advisorImg/advisorHome.PNG" width="250" >
