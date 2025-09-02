@@ -1,196 +1,176 @@
-import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Pressable,Button,FlatList, TextInput,Alert } from 'react-native';
-import {useValue} from './ValueContext';
-import { MaterialIcons, MaterialCommunityIcons} from '@expo/vector-icons';
+import React, { useState, useMemo } from 'react';
+import { SafeAreaView, StyleSheet, Text, View, Pressable, Button, FlatList, TextInput } from 'react-native';
+import { useValue } from './ValueContext';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
+const getTripKey = (t, idx) =>
+  t?._id ??
+  `${t?.destination ?? 'Trip'}|${t?.startDate ?? ''}|${t?.endDate ?? ''}|${idx}`;
 
+export default function Completed() {
+  const { currentValue, setCurrentValue } = useValue();
+  const completed = Array.isArray(currentValue?.completed) ? currentValue.completed : [];
 
-const Completed = () => {
-    const {currentValue, setCurrentValue} = useValue();
-    const [editedPlans, setEditedPlans] = useState({});
+  // State keyed by stable tripKey (not index)
+  const [expandedByKey, setExpandedByKey] = useState({});
+  const [editByKey, setEditByKey] = useState({});
+  const [draftByKey, setDraftByKey] = useState({});
 
-    const [expandedItems, setExpandedItems] = useState({});
-    const [editItems, setEditItems] = useState({});
-    
+  // Toggle expand
+  const toggleExpand = (key) => {
+    setExpandedByKey((s) => ({ ...s, [key]: !s[key] }));
+  };
 
-    const deleteTrip = (index) => {
-        const newTrips = currentValue.completed.filter((_, i) => i !== index);
-        setCurrentValue({ ...currentValue, completed: newTrips });
-    };
+  // Start/stop edit, seed draft with current plan
+  const toggleEdit = (key, item) => {
+    setEditByKey((s) => {
+      const next = !s[key];
+      // seed draft on opening
+      if (next) {
+        setDraftByKey((d) => ({ ...d, [key]: String(item?.plan ?? '').trim() }));
+      }
+      return { ...s, [key]: next };
+    });
+  };
 
-    const toggleExpand = (index) => {
-        setExpandedItems(prevState => ({
-            ...prevState,
-            [index]: !prevState[index]
-        }));
-    };
-    const toggleEdit = (index) => {
-        setEditItems(prevState => ({
-            ...prevState,
-            [index]: !prevState[index]
+  const handleInputChange = (key, text) => {
+    setDraftByKey((d) => ({ ...d, [key]: text }));
+  };
 
-        }));
+  const saveChanges = (key) => {
+    const idx = completed.findIndex((t, i) => getTripKey(t, i) === key);
+    if (idx === -1) return;
 
-        if (!editItems[index]) {
-            setEditedPlans(prevState => ({
-                ...prevState,
-                [index]: currentValue.completed[index].plan.trim()
-            }));
-        }
+    const updated = [...completed];
+    updated[idx] = { ...updated[idx], plan: String(draftByKey[key] ?? '').trim() };
 
-    };
-    const handleInputChange = (text, index) => {
-        setEditedPlans(prevState => ({
-            ...prevState,
-            [index]: text,
-        }));
-    };
-   
-    const moveToTrips = (index, item) => {
-        
-        const newTrip = currentValue['trips'].concat(
-            {
-                'plan': item.plan,
-                'prompt': item.prompt,
-                'destination': item.destination,
-                'startDate': item.startDate,
-                'endDate': item.endDate,
-            },
-        );
-        const updatedCompleted = currentValue.completed.filter((_, i) => i !== index);
-        
-        setCurrentValue({ ...currentValue, trips: newTrip, completed: updatedCompleted });
-        
-        
-    };
-    const saveChanges = (index) => {
-        // Apply changes to the plan
-        const updatedPlan = editedPlans[index];
-        
-        // Update the currentValue with the updated plan
-        const updatedTrips = [...currentValue.completed];
-        updatedTrips[index] = { ...updatedTrips[index], plan: updatedPlan };
-        setCurrentValue({ ...currentValue, completed: updatedTrips });
+    setCurrentValue((prev) => ({ ...prev, completed: updated }));
+    setEditByKey((s) => ({ ...s, [key]: false }));
+  };
 
-        // Toggle edit mode off
-        toggleEdit(index);
-    };
-  
-    const renderTrip = ({ item, index }) => {
-        const isExpanded = expandedItems[index];
-        const editMode = editItems[index];
-        
-        return (
-            <View style={styles.container}>
-                <View style={styles.header}>
-                    <Pressable
-                                title = {editMode ? "Collapse" : "Expand"}
-                                onPress={() => moveToTrips(index, item)} >
-                                <MaterialCommunityIcons name="airplane-check" size={30} color="green" />
-                    </Pressable>
-                    <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{item.destination}</Text>
-                    
-                    <Pressable
-                        title = {isExpanded ? "Collapse" : "Expand"}
-                        onPress={() => toggleExpand(index)} >
-        
-                        <Text style={{color:'white', margin:20,fontSize:'15'}}>{isExpanded ? <MaterialIcons name="expand-less" size={24} color="black" /> : <MaterialIcons name="expand-more" size={24} color="black" />}</Text>
-                    </Pressable>
-                   
+  const deleteTripByKey = (key) => {
+    // remove from data
+    const nextCompleted = completed.filter((t, i) => getTripKey(t, i) !== key);
+    // clean per-row state
+    setExpandedByKey(({ [key]: _, ...rest }) => rest);
+    setEditByKey(({ [key]: __, ...rest }) => rest);
+    setDraftByKey(({ [key]: ___, ...rest }) => rest);
 
-                </View>
-                
-                {isExpanded && (
-                    <>
-                    {!editMode ? (
-                        <>
-                        <View style ={{flexDirection:'row', padding:10, justifyContent: "flex-end"}}>
-                            
-                        
-                            <Pressable
-                                title = {editMode ? "Collapse" : "Expand"}
-                                onPress={() => toggleEdit(index)} >
-                                <MaterialIcons name="edit" size={24} color="black" />
-                            </Pressable>
-                        </View>
-                        
-                        <Text>{item.plan}</Text>
-                        </>
-                    ) : (
-                        <>
-                        
-                        <Button title='Save Changes' onPress={() => saveChanges(index)} />
-                        
-                       <View style = {{padding: 10}}>
-                        <TextInput
-                            key={index}
-                            placeholder={`${index + 1}`}
-                            style={{backgroundColor: 'white', height: 250, padding: 20, borderRadius: 10}}
-                            defaultValue={`${item.plan.trim()}`}
-                            multiline = {true}
-                            onChangeText={(text) => handleInputChange(text, index)}
-                        />
-                        </View>
-                        <Pressable style ={{marginTop:30, alignSelf:'center'}} onPress={() => deleteTrip(index)}>
-                            <View style = {{flexDirection:'row', alignContent: 'center'}}>
-                                <MaterialIcons name="delete" size={20} color="red" /> 
-                                <Text style ={{fontSize: 20, color:'red'}}>Delete this Itinerary</Text>
+    setCurrentValue((prev) => ({ ...prev, completed: nextCompleted }));
+  };
 
-                        </View>
-                                
-                        </Pressable>
-                       
+  const moveToTrips = (item, key) => {
+    const idx = completed.findIndex((t, i) => getTripKey(t, i) === key);
+    if (idx === -1) return;
 
-                        
-                        
-                        </>
-                        )}
-                    </>
-                )}
-            </View>
-        );
-    };
+    const nextTrips = Array.isArray(currentValue?.trips) ? [...currentValue.trips] : [];
+    // Preserve all fields (including photos/titlephoto)
+    const { plan, prompt, destination, startDate, endDate, photos, titlephoto } = item;
+    nextTrips.push({ plan, prompt, destination, startDate, endDate, photos, titlephoto });
+
+    const nextCompleted = completed.filter((_, i) => i !== idx);
+
+    // Clean per-row state
+    setExpandedByKey(({ [key]: _, ...rest }) => rest);
+    setEditByKey(({ [key]: __, ...rest }) => rest);
+    setDraftByKey(({ [key]: ___, ...rest }) => rest);
+
+    setCurrentValue((prev) => ({ ...prev, trips: nextTrips, completed: nextCompleted }));
+  };
+
+  const renderTrip = ({ item, index }) => {
+    const key = getTripKey(item, index);
+    const isExpanded = !!expandedByKey[key];
+    const isEditing = !!editByKey[key];
+    const draft = draftByKey[key] ?? String(item?.plan ?? '');
 
     return (
-        <SafeAreaView style={styles.containerPrime}>
+      <View style={styles.card}>
+        <View style={styles.header}>
+          <Pressable onPress={() => moveToTrips(item, key)}>
+            <MaterialCommunityIcons name="airplane-check" size={30} color="green" />
+          </Pressable>
 
-            <Button title ='clear' onPress ={ () => {setCurrentValue({...currentValue, trips: []})}}/>
-            
-                
-                <FlatList
-                    data={currentValue['completed']}
-                    renderItem={renderTrip}
-                    keyExtractor={(item, index) => index.toString()} // Use index as key for simplicity
-                />
-         
-        </SafeAreaView>
+          <Text style={styles.title}>{item?.destination ?? 'Trip'}</Text>
+
+          <Pressable onPress={() => toggleExpand(key)}>
+            {isExpanded ? (
+              <MaterialIcons name="expand-less" size={24} color="black" />
+            ) : (
+              <MaterialIcons name="expand-more" size={24} color="black" />
+            )}
+          </Pressable>
+        </View>
+
+        {isExpanded && (
+          <>
+            {!isEditing ? (
+              <>
+                <View style={styles.rowRight}>
+                  <Pressable onPress={() => toggleEdit(key, item)}>
+                    <MaterialIcons name="edit" size={24} color="black" />
+                  </Pressable>
+                </View>
+                <Text>{item?.plan ?? ''}</Text>
+              </>
+            ) : (
+              <>
+                <Button title="Save Changes" onPress={() => saveChanges(key)} />
+                <View style={{ padding: 10 }}>
+                  <TextInput
+                    placeholder="Edit itinerary…"
+                    style={styles.textArea}
+                    value={draft}
+                    multiline
+                    onChangeText={(txt) => handleInputChange(key, txt)}
+                  />
+                </View>
+
+                <Pressable style={{ marginTop: 30, alignSelf: 'center' }} onPress={() => deleteTripByKey(key)}>
+                  <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center', gap: 6 }}>
+                    <MaterialIcons name="delete" size={20} color="red" />
+                    <Text style={{ fontSize: 20, color: 'red' }}>Delete this Itinerary</Text>
+                  </View>
+                </Pressable>
+              </>
+            )}
+          </>
+        )}
+      </View>
     );
-};
+  };
+
+  return (
+    <SafeAreaView style={styles.containerPrime}>
+      <Button title="clear" onPress={() => setCurrentValue({ ...currentValue, trips: [] })} />
+      <FlatList
+        data={completed}
+        renderItem={renderTrip}
+        keyExtractor={(it, i) => getTripKey(it, i)}
+      />
+    </SafeAreaView>
+  );
+}
 
 const styles = StyleSheet.create({
-    containerPrime: {
-        flex: 1,
-        backgroundColor: 'white',
-        padding: 20,
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        
-        margin: 20,
-        backgroundColor: 'lightgrey',
-        borderRadius: 20,
-        padding: 20,
-        
-        alignContent: 'stretch',
-
-    },
-    header:{
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-
-    },
+  containerPrime: { flex: 1, backgroundColor: 'white', padding: 20 },
+  card: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    margin: 20,
+    backgroundColor: 'lightgrey',
+    borderRadius: 20,
+    padding: 20,
+  },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  title: { fontWeight: 'bold', fontSize: 20 },
+  rowRight: { flexDirection: 'row', justifyContent: 'flex-end', padding: 10 },
+  textArea: {
+    backgroundColor: 'white',
+    minHeight: 250,
+    padding: 20,
+    borderRadius: 10,
+    fontSize: 16,
+    textAlignVertical: 'top',
+  },
 });
-
-export default Completed;

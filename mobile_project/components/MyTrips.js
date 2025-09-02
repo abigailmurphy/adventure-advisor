@@ -11,7 +11,7 @@ const Plan = () => {
     return(
         <Drawer.Navigator>
         <Drawer.Screen name="My Itineraries" component={FutureScreen} />
-        <Drawer.Screen name="Completed Trips" component={CompleteScreen} />
+        <Drawer.Screen name="Taken Trips" component={CompleteScreen} />
         
         
       
