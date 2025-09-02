@@ -2,7 +2,7 @@
 A ReactNative/Expo mobile application, built as a part of CS153: Mobile Application Development at Brandeis University.
 
 
-<video src="advisorImg/Scrapbook.MOV" width="250" controls></video>
+<video src="advisorImg/Scrapbook.mp4" width="250" controls></video>
 
 ## Uses
 AdventureAdvisor is here to solve all of your travel headaches through planning your trip, and allowing easy documentation so that you will never forget about it. This tool will generate a detailed itinerary for any location based on user specifications. The user will then have the option to save this itinerary, edit as desired, and add photos in the 'scrabook' section of the app. Finally, your Adventure Advisor will map your travels with an interractive 3D globe. 
