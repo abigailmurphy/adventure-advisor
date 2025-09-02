@@ -118,7 +118,7 @@ const PlanAhead = () => {
                     {!editMode ? (
                         <>
                         <View style ={{flexDirection:'row', padding:10, justifyContent: "flex-end"}}>
-                            
+                              
                         
                             <Pressable
                                 title = {editMode ? "Collapse" : "Expand"}

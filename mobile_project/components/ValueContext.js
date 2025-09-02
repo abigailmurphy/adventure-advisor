@@ -99,8 +99,8 @@ getData(currentValue, setCurrentValue)
                 data: value,
                 expires: null  //  0 = never expires, 1000ms * 60 = 1min
               });
-          const jsonValue = JSON.stringify(value)
-          console.log('just stored '+jsonValue)
+          //const jsonValue = JSON.stringify(value)
+          //console.log('just stored '+jsonValue)
         } catch (e) {
           console.log("error in storeData ")
           console.dir(e)

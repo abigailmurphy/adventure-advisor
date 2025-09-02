@@ -9,6 +9,7 @@ import AboutScreen from './components/About.js';
 import PlanScreen from './components/Plan.js';
 import MyTripsScreen from './components/MyTrips.js';
 import ValueProvider from './components/ValueContext';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 
@@ -20,14 +21,23 @@ export default function App() {
   return (
     <ValueProvider value={data}>
     <NavigationContainer>
-      <Tab.Navigator>
-      <Tab.Screen name="Home" component={RootScreen} options={{ headerShown: false }}/>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          
+          tabBarActiveTintColor: 'blue',
+
+          
+         
+          
+        })}
+      >
+      <Tab.Screen name="Root" component={RootScreen} options={{ headerShown: false }}/>
         <Tab.Screen name="About" component={AboutScreen} />
         <Tab.Screen name="Find an Adventure" component={PlanScreen} />
         <Tab.Screen name="MyTrips" component={MyTripsScreen} />
       </Tab.Navigator>
     </NavigationContainer>
-    <StatusBar style="light" />
+    <StatusBar style="dark" />
     </ValueProvider>
   );
 }
