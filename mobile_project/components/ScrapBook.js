@@ -8,6 +8,19 @@ import tripPageScreen from './TripPage'
 import * as ImagePicker from 'expo-image-picker';
 import ImageViewer from './ImageViewer';
 
+function fmtYear(value) {
+    if (!value) return '—';
+    
+    if (value instanceof Date && !isNaN(value)) return String(value.getFullYear());
+  
+    const d = new Date(value);
+    if (!isNaN(d)) return String(d.getFullYear());
+
+    const s = String(value);
+    return s.length >= 4 ? s.slice(0, 4) : '—';
+  }
+
+
 
 const PlaceholderImage = require('./assets/images/default.webp');
 
@@ -26,12 +39,12 @@ function ScrapBookHome({navigation}){
         return (
             
             <View style={styles.container}>
-                <Pressable onPress ={() => {name = `${item.destination} ${item.startDate.substring(0,4)}`; navigation.navigate('TripPage',  {index})}}>
+                <Pressable onPress ={() => {name = `${item.destination} ${fmtYear(item.startDate)})}`; navigation.navigate('TripPage',  { index, title: `${item.destination} ${fmtYear(item.startDate)}` })}}>
                 <View style={styles.header}>
                     
                     <View style ={{flexDirection: 'column'}}>
                     <Text style={{ fontWeight: 'bold', fontSize: 20 }}>{item.destination}</Text>
-                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{item.startDate.substring(0,4)}</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{fmtYear(item.startDate)}</Text>
                     <View style ={styles.imageContainer}>
                         <ImageViewer placeholderImageSource={PlaceholderImage} selectedImage={item.photos[0]} />
 
@@ -75,8 +88,12 @@ const ScrapBookNav = () => {
         
     
         <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="ScrapBook" component={ScrapBookHome} options={{ headerShown: false }}  />
-          <Stack.Screen name="TripPage" component={tripPageScreen}    options={{ title: name }}/>
+          <Stack.Screen name="Back" component={ScrapBookHome} options={{ headerShown: false }}  />
+          <Stack.Screen
+                name="TripPage"
+                component={tripPageScreen}
+                options={({ route }) => ({ title: route.params.title })}
+        />
           
          
         </Stack.Navigator>

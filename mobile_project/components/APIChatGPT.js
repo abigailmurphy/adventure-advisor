@@ -20,7 +20,7 @@ const chatGPTService = async (message) => {
 
   try {
     const response = await axios.post(url, data, { headers });
-    console.log('API Response:', response.data.choices[0].message.content);
+    //console.log('API Response:', response.data.choices[0].message.content);
     return response.data.choices[0].message.content;
   } catch (error) {
     if (error.response) {
