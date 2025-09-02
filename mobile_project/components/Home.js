@@ -10,24 +10,13 @@ import { useValue } from './ValueContext';
 import TripPageScreen from './TripPage';
 import SpinningGlobe from './SpinningGlobe.js';
 
-const MAPBOX_TOKEN = process.env.EXPO_PUBLIC_MAPBOX_TOKEN || null;
 
-/** ---------- Geocoding helpers (destination-only) ---------- */
 
-async function geocodeWithMapbox(q) {
-  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-    q
-  )}.json?limit=1&access_token=${MAPBOX_TOKEN}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Mapbox error: ${res.status}`);
-  const data = await res.json();
-  const feat = data?.features?.[0];
-  if (!feat?.center) return null;
-  const [lon, lat] = feat.center;
-  return { lat, lon };
-}
+
+
 
 async function geocodeWithNominatim(q) {
+ 
   const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(
     q
   )}`;
@@ -47,8 +36,8 @@ async function geocodeWithNominatim(q) {
 async function geocodePlace(q) {
   if (!q) return null;
   try {
-    if (MAPBOX_TOKEN) return await geocodeWithMapbox(q);
-    return await geocodeWithNominatim(q); // fallback if no Mapbox token
+   
+    return await geocodeWithNominatim(q); 
   } catch {
     return null;
   }

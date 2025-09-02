@@ -58,20 +58,18 @@ export default function SpinningGlobe({
     return new THREE.Vector3(x, y, z);
   }
 
-  // React to prop changes: rebuild pin meshes whenever `pins` updates
+  // When pins update
   useEffect(() => {
     if (!glReadyRef.current || !pinGroupRef.current || !pinGeomRef.current) return;
 
     const group = pinGroupRef.current;
 
-    // Clear previous pins (dispose materials)
     for (let i = group.children.length - 1; i >= 0; i--) {
       const child = group.children[i];
       if (child.material) child.material.dispose();
       group.remove(child);
     }
 
-    // Add new pins
     const safePins = (Array.isArray(pins) ? pins : [])
       .map(normalizePin)
       .filter(Boolean);
@@ -81,7 +79,7 @@ export default function SpinningGlobe({
       const pin = new THREE.Mesh(pinGeomRef.current, mat);
       const p = latLonToVec3(lat, lon, RADIUS);
       pin.position.copy(p);
-      pin.lookAt(p.clone().multiplyScalar(1.1)); // face outward
+      pin.lookAt(p.clone().multiplyScalar(1.1));
       group.add(pin);
     });
   }, [pins]);
